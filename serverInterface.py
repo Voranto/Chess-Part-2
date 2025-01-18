@@ -560,7 +560,6 @@ class ServerInterface:
         
         #check either to disable or keep en passant square
         if type(self.selectedPiece.pieceType) == Pawn and abs(y-self.selectedPiece.row) == 2:
-            print("KEEP EN PASSANT SQUARE")
             if self.selectedPiece.pieceType.color == "white":
                 self.chessboard.enPassantSquare = (self.selectedPiece.column,self.selectedPiece.row-1)
             else:

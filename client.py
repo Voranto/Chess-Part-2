@@ -11,7 +11,6 @@ import time
 
 HOST = '127.0.0.1'  # Server address
 PORT = 5555
-secondPos = [400,300]
 lock = threading.Lock()
 
 color = None
@@ -52,9 +51,10 @@ moveMade = False
 clickDone = False
 restart = False
 promotion = False
+newPieceType = None
 #Function that runs a second thread in charge of the interchange of data with the server
 def receive_data(conn):
-    global secondPos,color,FEN,toMove,selectedPiecePos,interface,restart,dataToSend,quit,promotion,moveMade
+    global color,FEN,toMove,selectedPiecePos,restart,quit,promotion,moveMade
     """
         Handles the recieving and sending of data with the server
 
@@ -127,9 +127,33 @@ def receive_data(conn):
                 conn.send(pickle.dumps(dataToSend))
                 time.sleep(0.01)
                     
-                
+def handlePromotionMainUser():
+    global promotion,newPieceType
+    piece_options = ["q", "r", "b", "n"]
+    piece_names = ["Queen", "Rook", "Bishop", "Knight"]
+    pieceList = []
+    # Create buttons for the promotion options
+    for i, piece in enumerate(piece_options):
+        x = 150 + i * 170  # Adjust positions as needed
+        y = 300
+        pieceList.append(Button(x, y, 100, 150, "gray", piece_names[i], graphics))
+    if not newPieceType:
+        newPieceType = piece_options[graphics.displayPromotionMenu(pieceList)]
+        graphics.playSpecialSound()
+        if newPieceType and promotion:
+            dataToSend["promotion"] = (newPieceType if color == "black" else newPieceType.upper()) + promotion[5:]
+
+    promotion = None
+
+def handlePromotionSecondaryUser():
+    global running
+    while promotion:
+        graphics.getEvents()
+        if quit or graphics.checkForQuit():
+            quit_event.set()
+            running = False
 def main():
-    global interface,quit,dataToSend,moveMade,restart,promotion,moveMade
+    global quit,dataToSend,moveMade,restart,promotion,moveMade,newPieceType
     # Pygame setup
     
     clock = pygame.time.Clock()
@@ -141,7 +165,7 @@ def main():
     
     #Initialize secondary thread to handle server side interactions
     threading.Thread(target=receive_data, args=(conn,)).start()
-    newPieceType = None
+    
     #Main loop handling chess-side stuff, not socket stuff
     running = True
     while running:
@@ -154,27 +178,9 @@ def main():
             dataToSend["wantsToPlay"] = None
         
         if promotion and promotion[:5] == color:
-            piece_options = ["q", "r", "b", "n"]
-            piece_names = ["Queen", "Rook", "Bishop", "Knight"]
-            pieceList = []
-            # Create buttons for the promotion options
-            for i, piece in enumerate(piece_options):
-                x = 150 + i * 170  # Adjust positions as needed
-                y = 300
-                pieceList.append(Button(x, y, 100, 150, "gray", piece_names[i], graphics))
-            if not newPieceType:
-                newPieceType = piece_options[graphics.displayPromotionMenu(pieceList)]
-                graphics.playSpecialSound()
-                if newPieceType and promotion:
-                    dataToSend["promotion"] = (newPieceType if color == "black" else newPieceType.upper()) + promotion[5:]
-
-            promotion = None
+            handlePromotionMainUser()
         elif promotion is not None:
-            while promotion:
-                graphics.getEvents()
-                if quit or graphics.checkForQuit():
-                    quit_event.set()
-                    running = False
+            handlePromotionSecondaryUser()
         else:
             dataToSend["promotion"] = None
         
