@@ -1,0 +1,43 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Server",
+        "type": "shell",
+        "command": "python",
+        "args": ["C:/Users/lucas/OneDrive/Desktop/PROYECTOVERANO/CHESS_MULTIPLAYER/server.py"],
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      },
+      {
+        "label": "Run Client 1",
+        "type": "shell",
+        "command": "python",
+        "args": ["C:/Users/lucas/OneDrive/Desktop/PROYECTOVERANO/CHESS_MULTIPLAYER/client.py"],
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      },
+      {
+        "label": "Run Client 2",
+        "type": "shell",
+        "command": "python",
+        "args": ["C:/Users/lucas/OneDrive/Desktop/PROYECTOVERANO/CHESS_MULTIPLAYER/client.py"],
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      }
+    ]
+  }
+  
