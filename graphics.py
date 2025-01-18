@@ -36,7 +36,8 @@ class Graphics:
         mp3 of the default moving sound from chess.com
     capture : pygame.mixer.Sound
         Sound made when capturing a piece in chess.com 
-    
+    specialSound : pygame.mixer.Sound
+        Sound used for promotions
     Raises
     ------
     TypeError
@@ -54,6 +55,8 @@ class Graphics:
         Plays the default sound, set in __init__
     playCaptureSound(self)
         Plays the capture sound, set in __init__
+    playSpecialSound(self)
+        Plays the special sound, set in __init__
     convertGridCoords(self,x,y,color)
         Converts grid coordinates depending on the color.
         Example:
@@ -130,6 +133,7 @@ class Graphics:
         self.bigFont = pygame.font.SysFont("Comic Sans MS", 100)
         self.defaultMove =  pygame.mixer.Sound('assets/defaultMove.mp3')
         self.capture =  pygame.mixer.Sound('assets/capture.mp3')
+        self.specialSound =  pygame.mixer.Sound('assets/specialSound.mp3')
         
         
         self.events = []
@@ -182,6 +186,12 @@ class Graphics:
         Plays the default sound of a chess capture. Capture sound is built in class initialization in self.capture
         """
         self.capture.play()
+    
+    def playSpecialSound(self):
+        """
+        Plays the default sound of a chess capture. Capture sound is built in class initialization in self.capture
+        """
+        self.specialSound.play()
     
     def convertGridCoords(self,x,y,color):
         """

@@ -162,11 +162,12 @@ def main():
                 x = 150 + i * 170  # Adjust positions as needed
                 y = 300
                 pieceList.append(Button(x, y, 100, 150, "gray", piece_names[i], graphics))
-                print("check")
             if not newPieceType:
                 newPieceType = piece_options[graphics.displayPromotionMenu(pieceList)]
+                graphics.playSpecialSound()
                 if newPieceType and promotion:
                     dataToSend["promotion"] = (newPieceType if color == "black" else newPieceType.upper()) + promotion[5:]
+
             promotion = None
         elif promotion is not None:
             while promotion:
