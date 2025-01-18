@@ -5,13 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pieces module &#8212; Chess_Multiplayer 1-0 documentation</title>
+    <title>pieces module &#8212; Chess_Multiplayer 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
-    <script src="_static/documentation_options.js?v=5ff4436d"></script>
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://username.github.io/repository-name/pieces.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="server module" href="server.html" />
@@ -39,47 +40,211 @@
 <dt class="sig sig-object py" id="pieces.Bishop">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Bishop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Bishop" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the bishop piece. Can move up-left, down-left, up-right and down-right until the end of the board is found 
+or if a piece is found in its path. If the piece is of the opposite color, it can also move into that piece,
+“eating” it.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.King">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">King</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.King" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the King piece. Can move in all 8 directions but only one square at a time.</p>
+<section id="id1">
+<h2>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Raises<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.Night">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Night</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Night" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the knight piece. It can move in an L shape in all eight directions. (2-forward-1 to the side)</p>
+<section id="id3">
+<h2>Attributes<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Raises<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.Pawn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Pawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Pawn" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the pawn piece. 
+Possible movements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the square in front is clear, it can move one square forward</p></li>
+<li><p>If both the square in front and the one in front of that one are clear, it can also move there</p></li>
+<li><p>It can move forward-left and forward-right if there is a piece of the opposite color placed there, (eating it)</p></li>
+<li><p>It can move forward-left or forward-right if that square is the target en passant square (found in the Chessboard class)</p></li>
+</ul>
+</div></blockquote>
+<section id="id5">
+<h2>Attributes<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h2>Raises<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.Piece">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Piece</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pieceType</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Piece" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of a chess piece</p>
+<section id="id7">
+<h2>Attributes<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>row<span class="classifier">int</span></dt><dd><p>The y position of the current piece, has to be either 0 &lt;= row &lt; chessboard.height or -1 for 
+piece textures that dont appear on the board</p>
+</dd>
+<dt>column<span class="classifier">int</span></dt><dd><p>The x position of the current piece, has to be either 0 &lt;= column &lt; chessboard.width or -1 for 
+piece textures that dont appear on the board</p>
+</dd>
+<dt>position<span class="classifier">tuple (int,int)</span></dt><dd><p>A tuple representing the position based on row and column (see above)</p>
+</dd>
+<dt>pieceType<span class="classifier">Rook, Queen, King, Pawn, Bishop, Night</span></dt><dd><p>The type of piece, used to display its texture and color</p>
+</dd>
+<dt>currentPossibilities<span class="classifier">set</span></dt><dd><p>The grid squares the current piece has access to. Ensures all possibilities are in the form
+tuple(int x,int y), and all ints are 0 &lt;= x &lt; chessboard.width and 0 &lt;= y &lt; chessboard.height</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>getTexture(self)</dt><dd><p>Returns the texture of the piece</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pieces.Piece.getPieceInfo">
+<span class="sig-name descname"><span class="pre">getPieceInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Piece.getPieceInfo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pieces.Piece.getTexture">
 <span class="sig-name descname"><span class="pre">getTexture</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Piece.getTexture" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Getter of the current pieces texture</p>
+<p>Returns
+pygame.image</p>
+<blockquote>
+<div><p>The .png associated to the piece, to be found in the assets folder</p>
+</div></blockquote>
+</dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.Queen">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Queen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Queen" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the queen piece. It can move as the combination of the Rook and Bishop class (see above).</p>
+<section id="id8">
+<h2>Attributes<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h2>Raises<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pieces.Rook">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pieces.</span></span><span class="sig-name descname"><span class="pre">Rook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pieces.Rook" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that implements the rook piece. Can move up, down, left and right until the end of the board is found 
+or if a piece is found in its path. If the piece is of the opposite color, it can also move into that piece,
+“eating” it.</p>
+<section id="id10">
+<h2>Attributes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the piece. Ensures thats its value is either “white” or “black”</p>
+</dd>
+<dt>texture<span class="classifier">pygame.image</span></dt><dd><p>The texture associated to the piece. Its a png file found in the assets folder</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h2>Raises<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is invalid</p>
+</dd>
+<dt>ValidError </dt><dd><p>If color is neither white or black</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>

@@ -5,13 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>CHESS_MULTIPLAYER &#8212; Chess_Multiplayer 1-0 documentation</title>
+    <title>CHESS_MULTIPLAYER &#8212; Chess_Multiplayer 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
-    <script src="_static/documentation_options.js?v=5ff4436d"></script>
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://username.github.io/repository-name/modules.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -58,12 +59,14 @@
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.bishopPossiblities"><code class="docutils literal notranslate"><span class="pre">ClientInterface.bishopPossiblities()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.getBoard"><code class="docutils literal notranslate"><span class="pre">ClientInterface.getBoard()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.getGraphics"><code class="docutils literal notranslate"><span class="pre">ClientInterface.getGraphics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.getMaterialDifference"><code class="docutils literal notranslate"><span class="pre">ClientInterface.getMaterialDifference()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.getPieceByLetter"><code class="docutils literal notranslate"><span class="pre">ClientInterface.getPieceByLetter()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.isCheckmate"><code class="docutils literal notranslate"><span class="pre">ClientInterface.isCheckmate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.isValidBoard"><code class="docutils literal notranslate"><span class="pre">ClientInterface.isValidBoard()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.kingPossibilities"><code class="docutils literal notranslate"><span class="pre">ClientInterface.kingPossibilities()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.knightPossibilities"><code class="docutils literal notranslate"><span class="pre">ClientInterface.knightPossibilities()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.pawnPossibilities"><code class="docutils literal notranslate"><span class="pre">ClientInterface.pawnPossibilities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.renderEatenPieces"><code class="docutils literal notranslate"><span class="pre">ClientInterface.renderEatenPieces()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.renderSelectedPiece"><code class="docutils literal notranslate"><span class="pre">ClientInterface.renderSelectedPiece()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="clientInterface.html#clientInterface.ClientInterface.rookPossiblities"><code class="docutils literal notranslate"><span class="pre">ClientInterface.rookPossiblities()</span></code></a></li>
 </ul>
@@ -80,41 +83,27 @@
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.drawPieces"><code class="docutils literal notranslate"><span class="pre">Graphics.drawPieces()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.drawPossibilityCircle"><code class="docutils literal notranslate"><span class="pre">Graphics.drawPossibilityCircle()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.drawSmallPiece"><code class="docutils literal notranslate"><span class="pre">Graphics.drawSmallPiece()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.drawSmallText"><code class="docutils literal notranslate"><span class="pre">Graphics.drawSmallText()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.drawSquare"><code class="docutils literal notranslate"><span class="pre">Graphics.drawSquare()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.fillScreen"><code class="docutils literal notranslate"><span class="pre">Graphics.fillScreen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getEvents"><code class="docutils literal notranslate"><span class="pre">Graphics.getEvents()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getPos"><code class="docutils literal notranslate"><span class="pre">Graphics.getPos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getScreen"><code class="docutils literal notranslate"><span class="pre">Graphics.getScreen()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getScreenHeight"><code class="docutils literal notranslate"><span class="pre">Graphics.getScreenHeight()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getScreenWidth"><code class="docutils literal notranslate"><span class="pre">Graphics.getScreenWidth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.getSizeOfSmallText"><code class="docutils literal notranslate"><span class="pre">Graphics.getSizeOfSmallText()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.playCaptureSound"><code class="docutils literal notranslate"><span class="pre">Graphics.playCaptureSound()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.playDefaultSound"><code class="docutils literal notranslate"><span class="pre">Graphics.playDefaultSound()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.printBoard"><code class="docutils literal notranslate"><span class="pre">Graphics.printBoard()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.renderOwnColor"><code class="docutils literal notranslate"><span class="pre">Graphics.renderOwnColor()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.renderToMove"><code class="docutils literal notranslate"><span class="pre">Graphics.renderToMove()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.testColor"><code class="docutils literal notranslate"><span class="pre">Graphics.testColor()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphics.html#graphics.Graphics.updateDisplay"><code class="docutils literal notranslate"><span class="pre">Graphics.updateDisplay()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="interface.html">interface module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interface.html#interface.Interface"><code class="docutils literal notranslate"><span class="pre">Interface</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.bishopPossiblities"><code class="docutils literal notranslate"><span class="pre">Interface.bishopPossiblities()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.getBoard"><code class="docutils literal notranslate"><span class="pre">Interface.getBoard()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.getGraphics"><code class="docutils literal notranslate"><span class="pre">Interface.getGraphics()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.isCheckmate"><code class="docutils literal notranslate"><span class="pre">Interface.isCheckmate()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.isValidBoard"><code class="docutils literal notranslate"><span class="pre">Interface.isValidBoard()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.kingPossibilities"><code class="docutils literal notranslate"><span class="pre">Interface.kingPossibilities()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.knightPossibilities"><code class="docutils literal notranslate"><span class="pre">Interface.knightPossibilities()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.main"><code class="docutils literal notranslate"><span class="pre">Interface.main()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.move"><code class="docutils literal notranslate"><span class="pre">Interface.move()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.moveChecker"><code class="docutils literal notranslate"><span class="pre">Interface.moveChecker()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.pawnPossibilities"><code class="docutils literal notranslate"><span class="pre">Interface.pawnPossibilities()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.renderSelectedPiece"><code class="docutils literal notranslate"><span class="pre">Interface.renderSelectedPiece()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="interface.html#interface.Interface.rookPossiblities"><code class="docutils literal notranslate"><span class="pre">Interface.rookPossiblities()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">interface module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="location.html">location module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="location.html#location.Square"><code class="docutils literal notranslate"><span class="pre">Square</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="location.html#location.Square.getSquareChessNotation"><code class="docutils literal notranslate"><span class="pre">Square.getSquareChessNotation()</span></code></a></li>
@@ -130,6 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pieces.html#pieces.Night"><code class="docutils literal notranslate"><span class="pre">Night</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="pieces.html#pieces.Pawn"><code class="docutils literal notranslate"><span class="pre">Pawn</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="pieces.html#pieces.Piece"><code class="docutils literal notranslate"><span class="pre">Piece</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pieces.html#pieces.Piece.getPieceInfo"><code class="docutils literal notranslate"><span class="pre">Piece.getPieceInfo()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pieces.html#pieces.Piece.getTexture"><code class="docutils literal notranslate"><span class="pre">Piece.getTexture()</span></code></a></li>
 </ul>
 </li>
@@ -139,7 +129,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="server.html">server module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="server.html#server.convertCoords"><code class="docutils literal notranslate"><span class="pre">convertCoords()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html#server.getDataToSend"><code class="docutils literal notranslate"><span class="pre">getDataToSend()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html#server.handle_clients"><code class="docutils literal notranslate"><span class="pre">handle_clients()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html#server.runGame"><code class="docutils literal notranslate"><span class="pre">runGame()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html#server.start_server"><code class="docutils literal notranslate"><span class="pre">start_server()</span></code></a></li>
 </ul>
 </li>
@@ -151,7 +143,6 @@
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.isValidBoard"><code class="docutils literal notranslate"><span class="pre">ServerInterface.isValidBoard()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.kingPossibilities"><code class="docutils literal notranslate"><span class="pre">ServerInterface.kingPossibilities()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.knightPossibilities"><code class="docutils literal notranslate"><span class="pre">ServerInterface.knightPossibilities()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.main"><code class="docutils literal notranslate"><span class="pre">ServerInterface.main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.move"><code class="docutils literal notranslate"><span class="pre">ServerInterface.move()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.pawnPossibilities"><code class="docutils literal notranslate"><span class="pre">ServerInterface.pawnPossibilities()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="serverInterface.html#serverInterface.ServerInterface.renderSelectedPiece"><code class="docutils literal notranslate"><span class="pre">ServerInterface.renderSelectedPiece()</span></code></a></li>
