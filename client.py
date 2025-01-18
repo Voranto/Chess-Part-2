@@ -45,15 +45,16 @@ def convertGridCoords(x,y,color):
 
 #Variables to send data and recieve data
 selectedPiecePos = (-1,-1)
-dataToSend = {"clickPos": (-1,-1),"color": None,"wantsToPlay": None}
+dataToSend = {"clickPos": (-1,-1),"color": None,"wantsToPlay": None,"promotion":None}
 quit = False
 quit_event = threading.Event()
 moveMade = False
 clickDone = False
 restart = False
+promotion = False
 #Function that runs a second thread in charge of the interchange of data with the server
 def receive_data(conn):
-    global secondPos,color,FEN,toMove,selectedPiecePos,interface,restart,dataToSend,quit
+    global secondPos,color,FEN,toMove,selectedPiecePos,interface,restart,dataToSend,quit,promotion,moveMade
     """
         Handles the recieving and sending of data with the server
 
@@ -102,6 +103,7 @@ def receive_data(conn):
                         selectedPiecePos = data["selectedPiecePos"]
                         interface.eaten = data["eaten"]
                         interface.checkmate = data["checkmate"]
+                        promotion = data["promotion"]
                         #Update the client side selected position
                         if selectedPiecePos != (-1,-1) and interface.chessboard.board[selectedPiecePos[1]][selectedPiecePos[0]].pieceType.color == color:
                             interface.selectedPiece = interface.chessboard.board[selectedPiecePos[1]][selectedPiecePos[0]]
@@ -123,11 +125,11 @@ def receive_data(conn):
                         quit = True
                         quit_event.set()
                 conn.send(pickle.dumps(dataToSend))
-                time.sleep(0.1)
+                time.sleep(0.01)
                     
                 
 def main():
-    global interface,quit,dataToSend,moveMade,restart
+    global interface,quit,dataToSend,moveMade,restart,promotion,moveMade
     # Pygame setup
     
     clock = pygame.time.Clock()
@@ -139,7 +141,7 @@ def main():
     
     #Initialize secondary thread to handle server side interactions
     threading.Thread(target=receive_data, args=(conn,)).start()
-    
+    newPieceType = None
     #Main loop handling chess-side stuff, not socket stuff
     running = True
     while running:
@@ -150,6 +152,30 @@ def main():
             quitButton = Button(465, 600,100,300,"gray","Click here to quit",graphics)
             restart = False
             dataToSend["wantsToPlay"] = None
+        
+        if promotion and promotion[:5] == color:
+            piece_options = ["q", "r", "b", "n"]
+            piece_names = ["Queen", "Rook", "Bishop", "Knight"]
+            pieceList = []
+            # Create buttons for the promotion options
+            for i, piece in enumerate(piece_options):
+                x = 150 + i * 170  # Adjust positions as needed
+                y = 300
+                pieceList.append(Button(x, y, 100, 150, "gray", piece_names[i], graphics))
+                print("check")
+            if not newPieceType:
+                newPieceType = piece_options[graphics.displayPromotionMenu(pieceList)]
+                if newPieceType and promotion:
+                    dataToSend["promotion"] = (newPieceType if color == "black" else newPieceType.upper()) + promotion[5:]
+            promotion = None
+        elif promotion is not None:
+            while promotion:
+                graphics.getEvents()
+                if quit or graphics.checkForQuit():
+                    quit_event.set()
+                    running = False
+        else:
+            dataToSend["promotion"] = None
         
         #If no checkmate, game is running
         if interface.checkmate != "black" and interface.checkmate != "white":
@@ -162,7 +188,6 @@ def main():
                     previousBlackMaterial = interface.chessboard.blackMaterial
                     interface.chessboard.FENToBoard(FEN)
                     if moveMade:
-                        
                         
                         #Compare previous material to current material to look for captures to play the sound
                         captureOcurred = False
@@ -217,7 +242,7 @@ def main():
             
             if interface.eaten:
                 interface.renderEatenPieces()
-                
+            graphics.renderToMove()
             
             
             #Render more constant textures
@@ -230,37 +255,40 @@ def main():
             clock.tick(60)
         #checkmate has been achieved, check for new game
         else:
-            with lock:
-                
-                graphics.getEvents()
-                
-                interface.chessboard.FENToBoard(FEN)
-                if graphics.checkForClick():
-                    if playAgainButton.posInButton(graphics.getPos()):
+            
+            interface.chessboard.FENToBoard(FEN)
+            graphics.getEvents()
+            if graphics.checkForClick():
+                if playAgainButton.posInButton(graphics.getPos()):
+                    print("PLAY AGAIN")
+                    with lock:
                         dataToSend["wantsToPlay"] = "p"
-                        playAgainButton.outline = "red" 
-                        quitButton.outline = None                  
-                    if quitButton.posInButton(graphics.getPos()):
+                    playAgainButton.outline = "red" 
+                    quitButton.outline = None                  
+                if quitButton.posInButton(graphics.getPos()):
+                    print("QUIT")
+                    with lock:
                         dataToSend["wantsToPlay"] = "q"
-                        quitButton.outline = "red"
-                        playAgainButton.outline = None
-                        
-                if quit or graphics.checkForQuit():
-                    quit_event.set()
-                    running = False
-                graphics.fillScreen("gray")
-                graphics.drawBoard(interface.chessboard)
-                graphics.drawPieces(interface.chessboard,color)
-                interface.renderEatenPieces()
-                graphics.renderToMove()
-                if color:
-                    graphics.renderOwnColor(color)
-                if interface.checkmate:
-                    interface.graphics.displayCheckmate(interface.checkmate)
-                playAgainButton.drawButton()
-                quitButton.drawButton()
-                clock.tick(60)
-                graphics.updateDisplay()
+                    quitButton.outline = "red"
+                    playAgainButton.outline = None
+                    
+            if quit or graphics.checkForQuit():
+                quit_event.set()
+                running = False
+            graphics.fillScreen("gray")
+            graphics.drawBoard(interface.chessboard)
+            graphics.drawPieces(interface.chessboard,color)
+            interface.renderEatenPieces()
+            graphics.renderToMove()
+            if color:
+                graphics.renderOwnColor(color)
+            if interface.checkmate:
+                interface.graphics.displayCheckmate(interface.checkmate)
+            playAgainButton.drawButton()
+            quitButton.drawButton()
+            graphics.updateDisplay()
+            clock.tick(60)
+                
             
         
     #Close connection at the end of the loop

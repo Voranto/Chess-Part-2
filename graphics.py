@@ -95,6 +95,12 @@ class Graphics:
         Draws the pieces of the chessboard onto the screen
     testColor(self,color)
         Returns true if color is valid pygame color false else
+    drawText(self,text,x,y)
+        Draws a text onto the screen with my_font
+    getSizeOfText(self,text)
+        Gets size of a text with my_font
+    displayPromotionMenu(self,pieceList)
+        Displays the promotion screen
     """
     def __init__(self, width, height,board):
 
@@ -663,3 +669,99 @@ class Graphics:
             return True
         except:
             return False
+        
+    def drawText(self,text, x,y):
+        """
+        Draws a string with regular sized font. 
+        
+        Parameters
+        -----------
+        text : str
+            The text to be blitted onto the screen
+        x : int
+            The x position of the piece. 
+        y : int
+            The y position of the piece.
+        
+        
+        Raises
+        ----------
+        TypeError
+            If the input parameters are not of the correct type, as shown above
+        """
+        
+        #Validating correct input type
+        if type(text) != str:
+            raise TypeError("text must piece of type string, its current type is " + str(type(text)))
+        if type(x) != int:
+            raise TypeError("x coordinate is not of type integer, current type is " + str(type(x)) + " and its value is " + str(x))
+        if type(y) != int:
+            raise TypeError("y coordinate is not of type integer, current type is " + str(type(y)) + " and its value is " + str(y))
+        
+        
+        textToBlit = self.my_font.render(text,False,(0,0,0))
+        self.screen.blit(textToBlit,(x,y))
+    
+    def getSizeOfText(self,text):
+        """
+        Gets the dimensions of a text object
+        
+        Params
+        -------
+        text : str
+            The text you want the size of
+        
+        Returns
+        --------
+        int,int 
+            The width and height of the text object
+        
+        Raises
+        -------
+        TypeError
+            Input data is invalid
+        """
+        if type(text) != str:
+            raise TypeError("Input data is invalid, type must be string and current type is {}".format(type(text)))
+        
+        return self.my_font.size(text)
+
+    def displayPromotionMenu(self,pieceList):
+        """
+        Displays a promotion menu for the user to select the promoted piece.
+
+        Parameters
+        ----------
+        graphics : Graphics
+            The graphics object to handle rendering.
+        color : str
+            The color of the player ("white" or "black").
+        Returns
+        -------
+        str
+            The selected piece type ('q', 'r', 'b', 'n').
+        """
+        menu_running = True
+        
+
+        # Event loop to handle promotion selection
+        while menu_running:
+            self.screen.fill("white")
+            self.drawText("Select a piece for promotion:", 300, 100)
+            self.getEvents()
+            for button in pieceList:
+                button.drawButton("big")
+
+            for event in self.events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    for i, button in enumerate(pieceList):
+                        if button.posInButton(pos):
+                            menu_running = False
+                            return i
+
+            self.updateDisplay()

@@ -2,6 +2,7 @@ import socket
 import threading
 import random
 from chessboard import Chessboard
+from pieces import Piece,Pawn,Rook,Queen,Bishop,Night,King
 from serverInterface import ServerInterface
 from graphics import Graphics
 import pickle
@@ -40,6 +41,11 @@ def runGame(FEN,board,interface,dataToSend,clients):
             if data:
                 data = pickle.loads(data)
                 color =data["color"]
+                if data["promotion"]:
+                    print("PROMOTION",data["promotion"])
+                    board.board[int(data["promotion"][2])][int(data["promotion"][1])] = Piece(int(data["promotion"][1]),int(data["promotion"][2]),interface.getPieceByLetter(data["promotion"][0]))
+                    
+                    dataToSend["promotion"] = None
                 #we got a click
                 if data["clickPos"] != (-1,-1):
                     x,y = data["clickPos"]
@@ -62,6 +68,12 @@ def runGame(FEN,board,interface,dataToSend,clients):
                                 board.fullMoves += 1
                                 board.halfMoves += 1
                             print("The {} has moved from {} to {}".format(interface.selectedPiece.getPieceInfo(),interface.selectedPiece.position, (gridx,gridy)))
+                            
+                            #Check for promotions
+                            
+                            if type(interface.selectedPiece.pieceType) == Pawn:
+                                if (interface.selectedPiece.pieceType.color == "white" and gridy == 0) or (interface.selectedPiece.pieceType.color == "black" and gridy == 7):
+                                    dataToSend["promotion"] = interface.selectedPiece.pieceType.color + str(gridx) + str(gridy)
                             interface.move(gridx,gridy)
                             
         #Check for checkmate after move
@@ -103,11 +115,11 @@ def handle_clients(clients):
 
     playersWantToPlay = [True,True]
     while playersWantToPlay[0] and playersWantToPlay[1]:
-        FEN = "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 1"
+        FEN = "rnbqkbnr/pppppppp/8/8/2B5/5Q2/PPPPPPPP/RNB1K1NR w KQkq - 0 1"
         board = Chessboard(8,8)
         interface = ServerInterface(board)
         board.FENToBoard(FEN)
-        dataToSend = {"FEN":None, "toMove": None, "selectedPiecePos": None,"eaten":None,"checkmate" : None,"restart":False,"quit":False}
+        dataToSend = {"FEN":None, "toMove": None, "selectedPiecePos": None,"eaten":None,"checkmate" : None,"restart":False,"quit":False,"promotion":None}
         runGame(FEN,board,interface,dataToSend,clients)
         playersWantToPlay = [None,None]
         while playersWantToPlay[0] == None or playersWantToPlay[1] == None:

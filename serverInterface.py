@@ -40,6 +40,8 @@ class ServerInterface:
         Renders the possibilities of a piece no matter the type
     isCheckmate(self,color)
         Looks at a position in check and checks if it is salvagable or if its checkmate
+    getPieceByLetter(self,x)
+        Converts a letter seen in the FEN into its pieceType
     """
     def __init__(self,board):
         self.chessboard = board
@@ -626,22 +628,7 @@ class ServerInterface:
             #check for promotions
         if type(self.selectedPiece.pieceType) == Pawn:
             self.chessboard.halfMoves = 0
-            if (self.selectedPiece.pieceType.color == "white" and y == 0) or (self.selectedPiece.pieceType.color == "black" and y == 7):
-                print("PROMOTION!")
-                newType = None
-                while newType != "n" and newType != "b" and newType != "q" and newType != "r":
-                    newType = input("Type n for knight, b for bishop, q for queen and r for rook: ")   
-                    if newType == "n":
-                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Night(self.selectedPiece.pieceType.color))
-                    elif newType == "b":
-                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Bishop(self.selectedPiece.pieceType.color))
-                    elif newType == "r":
-                        
-                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Rook(self.selectedPiece.pieceType.color))
-                    elif newType == "q":
-                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Queen(self.selectedPiece.pieceType.color))
-                    else:
-                        print("INCORRECT INPUT")
+    
 
         
             
@@ -786,4 +773,59 @@ class ServerInterface:
 
                             return False
         return True
+    def getPieceByLetter(self,x):
+        """
+        Converts a letter into its said PieceType, following the same rules that the FEN uses.
+        
+        Lowercase letters map to black pieces and uppercase to white pieces.
+        The comparisons are as follows:
+        q -> queen
+        r -> rook
+        k -> king
+        b -> bishop
+        n -> knight
+        p -> pawn
+
+        Parameters
+        ----------
+        x : str
+            the letter to be returned
+            
+        Returns
+        -------
+        Queen,Rook,Bishop,Night,Pawn,King
+            The piece type appropiate for the letter, with its matching color
+        
+        Raises
+        -------
+        ValueError
+            If the string input x doesnt match any of the allowed pieceTypes
+        """
+        
+        if x == "Q":
+            return Queen("white")
+        if x == "R":
+            return Rook("white")
+        if x == "B":
+            return Bishop("white")
+        if x == "N":
+            return Night("white")
+        if x == "P":
+            return Pawn("white")
+        if x == "K":
+            return King("white")
+
+        if x == "q":
+            return Queen("black")
+        if x == "r":
+            return Rook("black")
+        if x == "b":
+            return Bishop("black")
+        if x == "n":
+            return Night("black")
+        if x == "p":
+            return Pawn("black")
+        if x == "k":
+            return King("black")
+        raise ValueError("Invalid type error: " + x)
     

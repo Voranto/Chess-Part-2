@@ -96,18 +96,26 @@ class Button:
             raise TypeError("newText must be of type string, current type is {}".format(type(newText)))
         self.text = newText
         
-    def drawButton(self):
+    def drawButton(self,size ="small"):
         """
         Draws the button onto the screen. Text must fit in the button (no wrapping around)
         
         Raises
         ------
+        TypeError
+            Invalid input type
         ValueError
             If the text is too big
         """
         
-        text_width,text_height = self.graphics.getSizeOfSmallText(self.text)
-        
+        if type(size) !=str:
+            raise TypeError("size must be type string, current type is {}".format(type(size)))
+        if size == "small":
+            text_width,text_height = self.graphics.getSizeOfSmallText(self.text)
+        elif size == "big":
+            text_width,text_height = self.graphics.getSizeOfText(self.text)
+        else:
+            raise ValueError("Size of text must either be small or big, current value is {}".format(size))
         if text_width > self.width: 
             raise ValueError("width of text cant be bigger than width of button")
         if text_height > self.height: 
@@ -118,7 +126,11 @@ class Button:
         if self.outline:
             self.graphics.drawSquare(self.outline,(self.x-3,self.y-3 , self.width+6,self.height +6))
         self.graphics.drawSquare(self.color,(self.x,self.y,self.width,self.height))
-        self.graphics.drawSmallText(self.text,self.x + dx//2, self.y +dy//2)
+        if size == "small":
+            self.graphics.drawSmallText(self.text,self.x + dx//2, self.y +dy//2)
+        elif size == "big":
+            self.graphics.drawText(self.text,self.x + dx//2, self.y +dy//2)
+        
         
     def posInButton(self,pos):
         """
