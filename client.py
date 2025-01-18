@@ -139,7 +139,6 @@ def handlePromotionMainUser():
         pieceList.append(Button(x, y, 100, 150, "gray", piece_names[i], graphics))
     if not newPieceType:
         newPieceType = piece_options[graphics.displayPromotionMenu(pieceList)]
-        graphics.playSpecialSound()
         if newPieceType and promotion:
             dataToSend["promotion"] = (newPieceType if color == "black" else newPieceType.upper()) + promotion[5:]
 
@@ -195,7 +194,6 @@ def main():
                     previousBlackMaterial = interface.chessboard.blackMaterial
                     interface.chessboard.FENToBoard(FEN)
                     if moveMade:
-                        
                         #Compare previous material to current material to look for captures to play the sound
                         captureOcurred = False
                         for piece in previousWhiteMaterial:
@@ -215,6 +213,8 @@ def main():
             #Constant graphic updates
             
             """
+            Editing the data that is sent
+            ----------------------------------------------------------
             Asign values of data to send to the server, which consists of the following:
             - "color" represents the color of the client, for server side comparisons
             - "clickPos" is the current Mouse position in case of a click, else (-1,-1) as discard values
@@ -224,10 +224,15 @@ def main():
                 dataToSend["clickPos"] = graphics.getPos()
             else:
                 dataToSend["clickPos"] = (-1,-1)
+            """
+            -------------------------------------------------------
+            """
+            
             
             if quit or graphics.checkForQuit():
                 quit_event.set()
                 running = False
+            
             
             graphics.fillScreen("gray")
             graphics.drawBoard(interface.chessboard)

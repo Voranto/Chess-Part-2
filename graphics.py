@@ -397,7 +397,7 @@ class Graphics:
         
         Parameters
         ---------------
-        color : str
+        color : str , Pygame.color
             A string representing the pygame color of the current square. Ensures that its a color accepted by pygame
         rect : tuple(int,int,int,int)
             A 4-tuple where the values represent the following:
@@ -415,7 +415,7 @@ class Graphics:
         """
         
         #validating input data
-        if type(color) != str:
+        if type(color) != str and type(color) != pygame.Color:
             raise TypeError("color must be of type string. Current type is " + str(type(color)) + " , and has a value of " + str(color))
         if type(rect) != tuple or len(rect) != 4:
             raise TypeError("rect must be a tuple of length four, current  value is ", rect)
@@ -775,3 +775,6 @@ class Graphics:
                             return i
 
             self.updateDisplay()
+    def darkenColor(self,colorStr):
+        currentColor = pygame.Color(colorStr)
+        return pygame.Color(int(currentColor.r * 0.7), int(currentColor.g * 0.7), int(currentColor.b * 0.7))
