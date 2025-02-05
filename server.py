@@ -8,7 +8,7 @@ from graphics import Graphics
 import pickle
 
 
-HOST = '127.0.0.1'  # Localhost
+HOST = '0.0.0.0'  # Localhost
 PORT = 5555
 
 # List to store client connections
@@ -115,7 +115,7 @@ def handle_clients(clients):
 
     playersWantToPlay = [True,True]
     while playersWantToPlay[0] and playersWantToPlay[1]:
-        FEN = "rnbqkbnr/pppppppp/8/8/2B5/5Q2/PPPPPPPP/RNB1K1NR w KQkq - 0 1"
+        FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         board = Chessboard(8,8)
         interface = ServerInterface(board)
         board.FENToBoard(FEN)

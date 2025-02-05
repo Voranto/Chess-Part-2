@@ -9,8 +9,8 @@ from clientInterface import ClientInterface
 from button import Button
 import time
 
-HOST = '127.0.0.1'  # Server address
-PORT = 5555
+HOST = '2.tcp.eu.ngrok.io'  # Localhost
+PORT = 12860
 lock = threading.Lock()
 
 color = None

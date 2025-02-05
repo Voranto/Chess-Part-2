@@ -325,10 +325,6 @@ class Graphics:
         bool
             If the left mouse click has been pressed
         """
-        for event in self.events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                return True
-        return False
         return pygame.mouse.get_pressed()[0]
     
     def getPos(self):
