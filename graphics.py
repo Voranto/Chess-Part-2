@@ -36,8 +36,7 @@ class Graphics:
         mp3 of the default moving sound from chess.com
     capture : pygame.mixer.Sound
         Sound made when capturing a piece in chess.com 
-    specialSound : pygame.mixer.Sound
-        Sound used for promotions
+    
     Raises
     ------
     TypeError
@@ -55,8 +54,6 @@ class Graphics:
         Plays the default sound, set in __init__
     playCaptureSound(self)
         Plays the capture sound, set in __init__
-    playSpecialSound(self)
-        Plays the special sound, set in __init__
     convertGridCoords(self,x,y,color)
         Converts grid coordinates depending on the color.
         Example:
@@ -88,7 +85,7 @@ class Graphics:
         Returns the height and width the rect formed by the text
     renderOwnColor(self,color)
         Render the color you are playing in the chess match as text
-    displayCheckmate(self,color)
+    displayEndScreen(self,color)
         In case of checkmate, display the checkmate screen
     drawBoard(self,chessboard)
         Draws the squares of the chessboard onto client side screen
@@ -98,12 +95,6 @@ class Graphics:
         Draws the pieces of the chessboard onto the screen
     testColor(self,color)
         Returns true if color is valid pygame color false else
-    drawText(self,text,x,y)
-        Draws a text onto the screen with my_font
-    getSizeOfText(self,text)
-        Gets size of a text with my_font
-    displayPromotionMenu(self,pieceList)
-        Displays the promotion screen
     """
     def __init__(self, width, height,board):
 
@@ -133,7 +124,6 @@ class Graphics:
         self.bigFont = pygame.font.SysFont("Comic Sans MS", 100)
         self.defaultMove =  pygame.mixer.Sound('assets/defaultMove.mp3')
         self.capture =  pygame.mixer.Sound('assets/capture.mp3')
-        self.specialSound =  pygame.mixer.Sound('assets/specialSound.mp3')
         
         
         self.events = []
@@ -186,12 +176,6 @@ class Graphics:
         Plays the default sound of a chess capture. Capture sound is built in class initialization in self.capture
         """
         self.capture.play()
-    
-    def playSpecialSound(self):
-        """
-        Plays the default sound of a chess capture. Capture sound is built in class initialization in self.capture
-        """
-        self.specialSound.play()
     
     def convertGridCoords(self,x,y,color):
         """
@@ -325,6 +309,10 @@ class Graphics:
         bool
             If the left mouse click has been pressed
         """
+        for event in self.events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return True
+        return False
         return pygame.mouse.get_pressed()[0]
     
     def getPos(self):
@@ -393,7 +381,7 @@ class Graphics:
         
         Parameters
         ---------------
-        color : str , Pygame.color
+        color : str
             A string representing the pygame color of the current square. Ensures that its a color accepted by pygame
         rect : tuple(int,int,int,int)
             A 4-tuple where the values represent the following:
@@ -411,7 +399,7 @@ class Graphics:
         """
         
         #validating input data
-        if type(color) != str and type(color) != pygame.Color:
+        if type(color) != str:
             raise TypeError("color must be of type string. Current type is " + str(type(color)) + " , and has a value of " + str(color))
         if type(rect) != tuple or len(rect) != 4:
             raise TypeError("rect must be a tuple of length four, current  value is ", rect)
@@ -521,7 +509,7 @@ class Graphics:
         self.screen.blit(text1, (820,100))
         self.screen.blit(text2, (830,140))
         
-    def displayCheckmate(self,color):
+    def displayEndScreen(self,color):
         """
         In case of checkmate, displays in the screen who has won
         
@@ -539,9 +527,15 @@ class Graphics:
         if type(color) != str:
             raise TypeError("color must be of type string, its current type is " + str(type(color)))
         
+        if color == "draw":
+            text1 = self.bigFont.render("GAME ENDED",False,(0,0,0))
+            text2 = self.bigFont.render("BY DRAW",False,(0,0,0))
+        else:
+            
+            text1 = self.bigFont.render("CHECKMATE",False,(0,0,0))
+            text2 = self.bigFont.render(str(color).upper() + " WINS",False,(0,0,0))
         
-        text1 = self.bigFont.render("CHECKMATE",False,(0,0,0))
-        text2 = self.bigFont.render(str(color).upper() + " WINS",False,(0,0,0))
+        
         pygame.draw.rect(self.screen, "lightgray",(80,230,700,350))
         self.screen.blit(text1,(100,250))
         self.screen.blit(text2,(80,400))
@@ -675,102 +669,3 @@ class Graphics:
             return True
         except:
             return False
-        
-    def drawText(self,text, x,y):
-        """
-        Draws a string with regular sized font. 
-        
-        Parameters
-        -----------
-        text : str
-            The text to be blitted onto the screen
-        x : int
-            The x position of the piece. 
-        y : int
-            The y position of the piece.
-        
-        
-        Raises
-        ----------
-        TypeError
-            If the input parameters are not of the correct type, as shown above
-        """
-        
-        #Validating correct input type
-        if type(text) != str:
-            raise TypeError("text must piece of type string, its current type is " + str(type(text)))
-        if type(x) != int:
-            raise TypeError("x coordinate is not of type integer, current type is " + str(type(x)) + " and its value is " + str(x))
-        if type(y) != int:
-            raise TypeError("y coordinate is not of type integer, current type is " + str(type(y)) + " and its value is " + str(y))
-        
-        
-        textToBlit = self.my_font.render(text,False,(0,0,0))
-        self.screen.blit(textToBlit,(x,y))
-    
-    def getSizeOfText(self,text):
-        """
-        Gets the dimensions of a text object
-        
-        Params
-        -------
-        text : str
-            The text you want the size of
-        
-        Returns
-        --------
-        int,int 
-            The width and height of the text object
-        
-        Raises
-        -------
-        TypeError
-            Input data is invalid
-        """
-        if type(text) != str:
-            raise TypeError("Input data is invalid, type must be string and current type is {}".format(type(text)))
-        
-        return self.my_font.size(text)
-
-    def displayPromotionMenu(self,pieceList):
-        """
-        Displays a promotion menu for the user to select the promoted piece.
-
-        Parameters
-        ----------
-        graphics : Graphics
-            The graphics object to handle rendering.
-        color : str
-            The color of the player ("white" or "black").
-        Returns
-        -------
-        str
-            The selected piece type ('q', 'r', 'b', 'n').
-        """
-        menu_running = True
-        
-
-        # Event loop to handle promotion selection
-        while menu_running:
-            self.screen.fill("white")
-            self.drawText("Select a piece for promotion:", 300, 100)
-            self.getEvents()
-            for button in pieceList:
-                button.drawButton("big")
-
-            for event in self.events:
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    for i, button in enumerate(pieceList):
-                        if button.posInButton(pos):
-                            menu_running = False
-                            return i
-
-            self.updateDisplay()
-    def darkenColor(self,colorStr):
-        currentColor = pygame.Color(colorStr)
-        return pygame.Color(int(currentColor.r * 0.7), int(currentColor.g * 0.7), int(currentColor.b * 0.7))

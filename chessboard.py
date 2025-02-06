@@ -437,7 +437,7 @@ class Chessboard:
         """
         
         for row in self.board:
-            temp = [type(item.pieceType) if item else "None" for item in row]
+            temp = [item.pieceType.color + str(type(item.pieceType)) if item else "None" for item in row]
             print(temp)
             
         print("Person to move is: ", self.toMove)
@@ -484,16 +484,17 @@ class Chessboard:
             raise TypeError("goToPosition must be of type tuple(int,int), current type is {}".format(goToPosition))
         
         x,y = goToPosition
+        if (x,y) == (3,-1):
+            print("ALERTTT")
         temporaryBoard = self.getTempBoard()
         temporaryPiece = Piece(piece.row,piece.column,piece.pieceType)
         temporaryBoard[piece.row][piece.column] = None
         temporaryBoard[y][x]= temporaryPiece
-        temporaryPiece.position = (x,y)
+        temporaryPiece.setPosition(x,y)
         if enPassant:
             if piece.pieceType.color == "white":
                 temporaryBoard[y+1][x] = None
             else:
                 temporaryBoard[y-1][x] = None
-        
         return temporaryBoard[:]
         

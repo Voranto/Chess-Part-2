@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>graphics module &#8212; Chess_Multiplayer 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://voranto.github.io/Chess-Part-2/docs/graphics.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="interface module" href="interface.html" />
+    <link rel="prev" title="clientInterface Module" href="clientInterface.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-graphics">
+<span id="graphics-module"></span><h1>graphics module<a class="headerlink" href="#module-graphics" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphics.Graphics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphics.</span></span><span class="sig-name descname"><span class="pre">Graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Graphics class handles all interactions with pygame, and with it, its interactions with the screen
+Requires for initialization a width and height for the screen resolution (in pixels), and a 
+Chessboard object that represents the board to be displayed
+…</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>width<span class="classifier">int</span></dt><dd><p>The width of the screen, in pixels</p>
+</dd>
+<dt>height<span class="classifier">int</span></dt><dd><p>The height of the screen, in pixels</p>
+</dd>
+<dt>board<span class="classifier">Chessboard</span></dt><dd><p>The current game state of the chessboard to be displayed</p>
+</dd>
+<dt>clientColor<span class="classifier">str | None</span></dt><dd><p>Represents the color of the client. Can be either “black”, “white” or None if client hasnt been initialized</p>
+</dd>
+<dt>screen<span class="classifier">pygame.display</span></dt><dd><p>Screen where all the textures and objects are drawn onto. Is initialized with the width and height from above</p>
+</dd>
+<dt>pixelsPerSquare<span class="classifier">int</span></dt><dd><p>Constant, to represent how many pixels per square in the chessboards grid</p>
+</dd>
+<dt>running<span class="classifier">bool</span></dt><dd><p>If the video system is running or not</p>
+</dd>
+<dt>smallFont<span class="classifier">pygame.font</span></dt><dd><p>Small font used to render the difference in material between players</p>
+</dd>
+<dt>my_font<span class="classifier">pygame.font</span></dt><dd><p>General font for general usage</p>
+</dd>
+<dt>bigFont<span class="classifier">pygame.font</span></dt><dd><p>Upscaled font for displaying checkmate</p>
+</dd>
+<dt>defaultMove<span class="classifier">pygame.mixer.Sound</span></dt><dd><p>mp3 of the default moving sound from chess.com</p>
+</dd>
+<dt>capture<span class="classifier">pygame.mixer.Sound</span></dt><dd><p>Sound made when capturing a piece in chess.com</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input data is not of the correct type</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>getScreenHeight(self)</dt><dd><p>Returns the screens height</p>
+</dd>
+<dt>getScreenWidth(self)</dt><dd><p>Returns the screens width</p>
+</dd>
+<dt>getScreen(self)</dt><dd><p>Returns the screen object</p>
+</dd>
+<dt>playDefaultSound(self)</dt><dd><p>Plays the default sound, set in __init__</p>
+</dd>
+<dt>playCaptureSound(self)</dt><dd><p>Plays the capture sound, set in __init__</p>
+</dd>
+<dt>convertGridCoords(self,x,y,color)</dt><dd><p>Converts grid coordinates depending on the color.
+Example:</p>
+<blockquote>
+<div><p>(1,1,”white) -&gt; (1,1)
+(1,1,”black”) -&gt; (6,6)</p>
+</div></blockquote>
+</dd>
+<dt>drawSmallPiece(self,pieceType,x,y)</dt><dd><p>Draws a chess piece in a small size, done to render eaten material for each player</p>
+</dd>
+<dt>drawPossibilityCircle(self,y,x)</dt><dd><p>Draws a gray circle in a grid square to represent where selectedPiece can move</p>
+</dd>
+<dt>checkForClick(self)</dt><dd><p>Checks if in the current frame the user has clicked his mouse</p>
+</dd>
+<dt>getPos(self)</dt><dd><p>Returns current mouse position</p>
+</dd>
+<dt>fillScreen(self,color)</dt><dd><p>Fills the entire screen with a color. Used to “overwrite” the previous frame</p>
+</dd>
+<dt>getEvents(self)</dt><dd><p>Saves the events of the frame onto self.events</p>
+</dd>
+<dt>checkForQuit(self)</dt><dd><p>Detects if the user has closed the window</p>
+</dd>
+<dt>drawSquare(self,color,rect)</dt><dd><p>Draws a square of dimensions rect, of color color, on the screen</p>
+</dd>
+<dt>renderToMove(self)</dt><dd><p>Renders the text that displays which color has to move</p>
+</dd>
+<dt>updateDisplay(self)</dt><dd><p>Updates the display onto the clients screen</p>
+</dd>
+<dt>drawSmallText(self,text, x,y)</dt><dd><p>Draws a text of font size 15 in the x,y position in the screen</p>
+</dd>
+<dt>getSizeOfSmallText(self,text)</dt><dd><p>Returns the height and width the rect formed by the text</p>
+</dd>
+<dt>renderOwnColor(self,color)</dt><dd><p>Render the color you are playing in the chess match as text</p>
+</dd>
+<dt>displayCheckmate(self,color)</dt><dd><p>In case of checkmate, display the checkmate screen</p>
+</dd>
+<dt>drawBoard(self,chessboard)</dt><dd><p>Draws the squares of the chessboard onto client side screen</p>
+</dd>
+<dt>printBoard(self)</dt><dd><p>Prints board information for debugging purposes into the console</p>
+</dd>
+<dt>drawPieces(self,chessboard,color)</dt><dd><p>Draws the pieces of the chessboard onto the screen</p>
+</dd>
+<dt>testColor(self,color)</dt><dd><p>Returns true if color is valid pygame color false else</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.checkForClick">
+<span class="sig-name descname"><span class="pre">checkForClick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.checkForClick" title="Link to this definition">¶</a></dt>
+<dd><p>Detects if a click has been made</p>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>bool</dt><dd><p>If the left mouse click has been pressed</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.checkForQuit">
+<span class="sig-name descname"><span class="pre">checkForQuit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.checkForQuit" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the pygame video system has been quit or not</p>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if it has quit, False for the opposite</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.convertGridCoords">
+<span class="sig-name descname"><span class="pre">convertGridCoords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.convertGridCoords" title="Link to this definition">¶</a></dt>
+<dd><p>Function to convert grid coordinates based on color
+Server side color doesnt matter, but client side, for rendering and otherwise,
+black has an updated grid position.
+Examples:</p>
+<p>(1,1,”white”) =&gt; (1,1)
+(1,1,”black”) =&gt; (6,6)</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>x<span class="classifier">int</span></dt><dd><p>The x position of the piece. Ensures that 0 &lt;= x &lt; self.board.width</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>The y position of the piece. Ensures that 0 &lt;= y &lt; self.board.height</p>
+</dd>
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the client. Ensures that it is either “white” or “black”</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple(int,int)</dt><dd><p>The updated position in the form of a 2-tuple</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Raises<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the position isnt in the correct  range, or the color doesnt have the appropiate value</p>
+</dd>
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.displayCheckmate">
+<span class="sig-name descname"><span class="pre">displayCheckmate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.displayCheckmate" title="Link to this definition">¶</a></dt>
+<dd><p>In case of checkmate, displays in the screen who has won</p>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the client</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h3>Raises<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawBoard">
+<span class="sig-name descname"><span class="pre">drawBoard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chessboard</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Draws the grid squares of the board in a checkboard pattern.
+Colors of the grid squares are declared below</p>
+<section id="id6">
+<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>chessboard<span class="classifier">Chessboard</span></dt><dd><p>The board to be displayed</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Raises<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError </dt><dd><p>If the input type are incorrect</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawPieces">
+<span class="sig-name descname"><span class="pre">drawPieces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chessboard</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawPieces" title="Link to this definition">¶</a></dt>
+<dd><p>Draws the pieces of the chessboard onto the screen. Will be reversed for black</p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>chessboard<span class="classifier">Chessboard</span></dt><dd><p>Currently unused, the board to be displayed</p>
+</dd>
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the client. Ensures that its either “black” or “white”</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h3>Raises<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>Input types are incorrect</p>
+</dd>
+<dt>ValueError</dt><dd><p>color is neither “black” or “white”</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawPossibilityCircle">
+<span class="sig-name descname"><span class="pre">drawPossibilityCircle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawPossibilityCircle" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a small gray circle that represents the grid square where the selected piece can move to</p>
+<section id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>x<span class="classifier">int</span></dt><dd><p>The x grid position of the piece. Ensures that 0 &lt;= x &lt; self.board.width</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>The y grid position of the piece. Ensures that 0 &lt;= y &lt; self.board.height</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h3>Raises<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the grid coordinates (x,y) are out of their range</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawSmallPiece">
+<span class="sig-name descname"><span class="pre">drawSmallPiece</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pieceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawSmallPiece" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a piece with a size of 27 pixels (as an arbitrary value). Used to display the eaten material client side</p>
+<section id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>pieceType<span class="classifier">Queen, Rook, Bishop, Night, Pawn, King</span></dt><dd><p>The piece type of the piece to be drawn</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>The x position of the piece.</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>The y position of the piece.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h3>Raises<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawSmallText">
+<span class="sig-name descname"><span class="pre">drawSmallText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawSmallText" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a string with font size 15 (as an arbitrary value). Used to display how much material above the other the client has</p>
+<section id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>The text to be blitted onto the screen</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>The x position of the piece.</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>The y position of the piece.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h3>Raises<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.drawSquare">
+<span class="sig-name descname"><span class="pre">drawSquare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.drawSquare" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a square onto the screen. Used to display the squared grid of the chess game</p>
+<section id="id16">
+<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>A string representing the pygame color of the current square. Ensures that its a color accepted by pygame</p>
+</dd>
+<dt>rect<span class="classifier">tuple(int,int,int,int)</span></dt><dd><p>A 4-tuple where the values represent the following:
+- Horizontal distance (in pixels) from the upper left corner of the screen to the upper left corner of the square
+- Vertical distance (in pixels) from the upper left corner of the screen to the upper left corner of the square
+- Width of the square in pixels
+- Height of the square in pixels</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h3>Raises<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If color is not of type string or rect is not a four tuple made of integers</p>
+</dd>
+<dt>ValueError</dt><dd><p>If color is neither “white” or “black”</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.fillScreen">
+<span class="sig-name descname"><span class="pre">fillScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.fillScreen" title="Link to this definition">¶</a></dt>
+<dd><p>Fills the screen of a specific color, used to overwrite the previous frame</p>
+<section id="id18">
+<h3>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color which the screen is filled with. Ensures it is a valid color</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h3>Raises<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the input color is not accepted by pygame</p>
+</dd>
+<dt>TypeError</dt><dd><p>If the input color is not a string</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getEvents">
+<span class="sig-name descname"><span class="pre">getEvents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getEvents" title="Link to this definition">¶</a></dt>
+<dd><p>Saves the current events of the frame onto self.events</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getPos">
+<span class="sig-name descname"><span class="pre">getPos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getPos" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the current mouse position relative to the screen</p>
+<section id="id20">
+<h3>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple(int,int)</dt><dd><p>A tuple in the form of (x,y) where x represents the horizontal distance to 
+the upper left corner and y the vertical distance to the upper left corner, in pixels</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getScreen">
+<span class="sig-name descname"><span class="pre">getScreen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getScreen" title="Link to this definition">¶</a></dt>
+<dd><p>Getter returning the screen object of the graphics class</p>
+<section id="id21">
+<h3>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>pygame.display</dt><dd><p>The pygame screen object where everything is drawn onto</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getScreenHeight">
+<span class="sig-name descname"><span class="pre">getScreenHeight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getScreenHeight" title="Link to this definition">¶</a></dt>
+<dd><p>Getter returning the screens height in pixels</p>
+<section id="id22">
+<h3>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>int</dt><dd><p>The height of the screen in pixels</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getScreenWidth">
+<span class="sig-name descname"><span class="pre">getScreenWidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getScreenWidth" title="Link to this definition">¶</a></dt>
+<dd><p>Getter returning the screens width in pixels</p>
+<section id="id23">
+<h3>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>int</dt><dd><p>The width of the screen in pixels</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.getSizeOfSmallText">
+<span class="sig-name descname"><span class="pre">getSizeOfSmallText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.getSizeOfSmallText" title="Link to this definition">¶</a></dt>
+<dd><p>Gets the dimensions of a text object</p>
+<section id="params">
+<h3>Params<a class="headerlink" href="#params" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>The text you want the size of</p>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h3>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>int,int </dt><dd><p>The width and height of the text object</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h3>Raises<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>Input data is invalid</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.playCaptureSound">
+<span class="sig-name descname"><span class="pre">playCaptureSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.playCaptureSound" title="Link to this definition">¶</a></dt>
+<dd><p>Plays the default sound of a chess capture. Capture sound is built in class initialization in self.capture</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.playDefaultSound">
+<span class="sig-name descname"><span class="pre">playDefaultSound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.playDefaultSound" title="Link to this definition">¶</a></dt>
+<dd><p>Plays the default sound of a chess move. Default sound is built in class initialization in self.defaultMove</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.printBoard">
+<span class="sig-name descname"><span class="pre">printBoard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.printBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Prints the boards information for debugging purposes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.renderOwnColor">
+<span class="sig-name descname"><span class="pre">renderOwnColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.renderOwnColor" title="Link to this definition">¶</a></dt>
+<dd><p>Draws a string using my_font as its font to display the clients color in the game</p>
+<section id="id26">
+<h3>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color of the client</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h3>Raises<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input parameters are not of the correct type, as shown above</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.renderToMove">
+<span class="sig-name descname"><span class="pre">renderToMove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.renderToMove" title="Link to this definition">¶</a></dt>
+<dd><p>Renders which player is able to move in the chessboard</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.testColor">
+<span class="sig-name descname"><span class="pre">testColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.testColor" title="Link to this definition">¶</a></dt>
+<dd><p>checks if a color is a valid pygame color</p>
+<section id="id28">
+<h3>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>The color to check</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h3>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if color is valid False otherwise</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h3>Raises<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>Input data invalid format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics.Graphics.updateDisplay">
+<span class="sig-name descname"><span class="pre">updateDisplay</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#graphics.Graphics.updateDisplay" title="Link to this definition">¶</a></dt>
+<dd><p>Updates the display onto the clients screen</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chess_Multiplayer</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chessboard.html">chessboard module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">client module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clientInterface.html">clientInterface Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">graphics module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#graphics.Graphics"><code class="docutils literal notranslate"><span class="pre">Graphics</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location.html">location module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pieces.html">pieces module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serverInterface.html">serverInterface Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="clientInterface.html" title="previous chapter">clientInterface Module</a></li>
+      <li>Next: <a href="interface.html" title="next chapter">interface module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luca Siegel Moreno.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/graphics.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

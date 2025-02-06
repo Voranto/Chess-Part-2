@@ -46,7 +46,10 @@ class Piece:
     def getPieceInfo(self):
         return self.pieceType.color + " " + str(type(self.pieceType))
         
-
+    def setPosition(self,x,y):
+        self.position = (x,y)
+        self.row = y
+        self.column = x
 class Rook:
     """
     Class that implements the rook piece. Can move up, down, left and right until the end of the board is found 

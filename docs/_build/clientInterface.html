@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>clientInterface Module &#8212; Chess_Multiplayer 1-0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5ff4436d"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="graphics module" href="graphics.html" />
+    <link rel="prev" title="client module" href="client.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="clientinterface-module">
+<h1>clientInterface Module<a class="headerlink" href="#clientinterface-module" title="Link to this heading">¶</a></h1>
+<dl class="py class" id="module-clientInterface">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">clientInterface.</span></span><span class="sig-name descname"><span class="pre">ClientInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graphics</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The ClientInterface class handles all chessboard interactions client side.
+A Chessboard object and a Graphics object are required for initialization
+Doesnt allow client side moves, only renders possibilities and looks for check and checkmate
+…</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>chessboard<span class="classifier">Chessboard</span></dt><dd><p>a chessboard object used to display the game board on the screen</p>
+</dd>
+<dt>graphics<span class="classifier">Graphics</span></dt><dd><p>the object in charge of all pygame interactions and everything you see on the screen</p>
+</dd>
+<dt>selectedPiece<span class="classifier">Piece</span></dt><dd><p>the piece that was clicked, to display its red square and all its possibilitie</p>
+</dd>
+<dt>eaten<span class="classifier">dict</span></dt><dd><p>All the pieces that have been eaten throughout the game</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>rookPossiblities(self,draw,piece,board,renderAllPossibilities)</dt><dd><p>Calculates and renders the possibilities of a piece with a pieceType Rook</p>
+</dd>
+<dt>bishopPossiblities(self,draw,piece,board,renderAllPossibilities)</dt><dd><p>Calculates and renders the possibilities of a piece with a pieceType Bishop</p>
+</dd>
+<dt>kingPossibilities(self,draw,piece,board,renderAllPossibilities)</dt><dd><p>Calculates and renders the possibilities of a piece with a pieceType King</p>
+</dd>
+<dt>knightPossibilities(self,draw,piece,board,renderAllPossibilities)</dt><dd><p>Calculates and renders the possibilities of a piece with a pieceType Night</p>
+</dd>
+<dt>pawnPossibilities(self,draw,piece,board,renderAllPossibilities)</dt><dd><p>Calculates and renders the possibilities of a piece with a pieceType Pawn</p>
+</dd>
+<dt>getPieceByLetter(self,x)</dt><dd><p>Converts a letter seen in the FEN into its pieceType</p>
+</dd>
+<dt>getBoard(self)</dt><dd><p>Returns the board</p>
+</dd>
+<dt>getGraphics(self)</dt><dd><p>Returns the graphics</p>
+</dd>
+<dt>isValidBoard(self,board,whiteKingPos, blackKingPos,renderAllPossibilities)</dt><dd><p>Checks board and returns an integer representing no checks, white in check or black in check</p>
+</dd>
+<dt>renderSelectedPiece(self,draw = True,piece = None,board = None,renderAllPossibilities = True)</dt><dd><p>Renders the possibilities of a piece no matter the type</p>
+</dd>
+<dt>isCheckmate(self,color)</dt><dd><p>Looks at a position in check and checks if it is salvagable or if its checkmate</p>
+</dd>
+<dt>main(self)</dt><dd><p>Main loop of the class</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.bishopPossiblities">
+<span class="sig-name descname"><span class="pre">bishopPossiblities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.bishopPossiblities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the possibilities of movement for a Piece of pieceType Bishop</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool</span></dt><dd><p>If True, the possibilities of the piece are drawn onto the clients screen. If False, possibilities arent drawn</p>
+</dd>
+<dt>piece<span class="classifier">Piece</span></dt><dd><p>The Piece to be rendered
+Ensures that 0 &lt;= piece.column &lt; self.chessboard.width
+Ensures that 0 &lt;= piece.row &lt; self.chessboard.height</p>
+</dd>
+<dt>board<span class="classifier">List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D matrix that represents the chessboard of the game played
+Ensures all the items in array are either None or Piece objects</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.getBoard">
+<span class="sig-name descname"><span class="pre">getBoard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.getBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Getter returning the board</p>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Chessboard</dt><dd><p>The board of the interface</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.getGraphics">
+<span class="sig-name descname"><span class="pre">getGraphics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.getGraphics" title="Link to this definition">¶</a></dt>
+<dd><p>Getter returning the graphics</p>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Graphics</dt><dd><p>The graphics of the interface</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.getPieceByLetter">
+<span class="sig-name descname"><span class="pre">getPieceByLetter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.getPieceByLetter" title="Link to this definition">¶</a></dt>
+<dd><p>Converts a letter into its said PieceType, following the same rules that the FEN uses.</p>
+<p>Lowercase letters map to black pieces and uppercase to white pieces.
+The comparisons are as follows:
+q -&gt; queen
+r -&gt; rook
+k -&gt; king
+b -&gt; bishop
+n -&gt; knight
+p -&gt; pawn</p>
+<section id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>x<span class="classifier">str</span></dt><dd><p>the letter to be returned</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Queen,Rook,Bishop,Night,Pawn,King</dt><dd><p>The piece type appropiate for the letter, with its matching color</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Raises<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the string input x doesnt match any of the allowed pieceTypes</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.isCheckmate">
+<span class="sig-name descname"><span class="pre">isCheckmate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.isCheckmate" title="Link to this definition">¶</a></dt>
+<dd><p>Taking the self.chessboard.board as the current board, and assuming the position is already in check
+Checks if the position is a checkmate or not</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>color<span class="classifier">str</span></dt><dd><p>Represents the color the pieces that are being checked for checkmate
+Ensures it is either “black” or “white”</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if its checkmate False if its not</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Raises<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If color is not “black” or “white”</p>
+</dd>
+<dt>TypeError</dt><dd><p>color is not of type string</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.isValidBoard">
+<span class="sig-name descname"><span class="pre">isValidBoard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whiteKingPos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blackKingPos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.isValidBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a current board position has any checks or not</p>
+<p>Returns 0 if no checks, returns 1 if white is in check, returns 2 if black is in check</p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>board<span class="classifier">&lt;List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D Matrix representing a chess board</p>
+</dd>
+<dt>whiteKingPos<span class="classifier">tuple(int,int)</span></dt><dd><p>A tuple of (x,y) integers that represents the current grid position of the white king
+Ensures that 0 &lt;= x &lt; self.chessboard.width and 0 &lt;= y &lt; self.chessboard.height</p>
+</dd>
+<dt>blackKingPos<span class="classifier">tuple(int,int)</span></dt><dd><p>A tuple of (x,y) integers that represents the current grid position of the black king
+Ensures that 0 &lt;= x &lt; self.chessboard.width and 0 &lt;= y &lt; self.chessboard.height</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>int</dt><dd><p>0 represents no checks, 1 represents white is in check and 2 represents black is in check</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Raises<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the board has an invalid format (wrong size or values) or the king positions arent valid</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.kingPossibilities">
+<span class="sig-name descname"><span class="pre">kingPossibilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.kingPossibilities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the possibilities of movement for a Piece of pieceType King</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool</span></dt><dd><p>If True, the possibilities of the piece are drawn onto the clients screen. If False, possibilities arent drawn</p>
+</dd>
+<dt>piece<span class="classifier">Piece</span></dt><dd><p>The Piece to be rendered
+Ensures that 0 &lt;= piece.column &lt; self.chessboard.width
+Ensures that 0 &lt;= piece.row &lt; self.chessboard.height</p>
+</dd>
+<dt>board<span class="classifier">List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D matrix that represents the chessboard of the game played
+Ensures all the items in array are either None or Piece objects</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>Raises<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.knightPossibilities">
+<span class="sig-name descname"><span class="pre">knightPossibilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.knightPossibilities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the possibilities of movement for a Piece of pieceType Night</p>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool</span></dt><dd><p>If True, the possibilities of the piece are drawn onto the clients screen. If False, possibilities arent drawn</p>
+</dd>
+<dt>piece<span class="classifier">Piece</span></dt><dd><p>The Piece to be rendered
+Ensures that 0 &lt;= piece.column &lt; self.chessboard.width
+Ensures that 0 &lt;= piece.row &lt; self.chessboard.height</p>
+</dd>
+<dt>board<span class="classifier">List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D matrix that represents the chessboard of the game played
+Ensures all the items in array are either None or Piece objects</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Raises<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.pawnPossibilities">
+<span class="sig-name descname"><span class="pre">pawnPossibilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.pawnPossibilities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the possibilities of movement for a Piece of pieceType Pawn</p>
+<section id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool</span></dt><dd><p>If True, the possibilities of the piece are drawn onto the clients screen. If False, possibilities arent drawn</p>
+</dd>
+<dt>piece<span class="classifier">Piece</span></dt><dd><p>The Piece to be rendered
+Ensures that 0 &lt;= piece.column &lt; self.chessboard.width
+Ensures that 0 &lt;= piece.row &lt; self.chessboard.height</p>
+</dd>
+<dt>board<span class="classifier">List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D matrix that represents the chessboard of the game played
+Ensures all the items in array are either None or Piece objects</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h3>Raises<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.renderSelectedPiece">
+<span class="sig-name descname"><span class="pre">renderSelectedPiece</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.renderSelectedPiece" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Renders the possibilities of a piece, no matter its type. Acts like a parent method for the methods with</dt><dd><p>the name &lt;PieceType&gt;Possibilities</p>
+</dd>
+</dl>
+<section id="id17">
+<h3>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool , optional</span></dt><dd><p>If the pssibility circles should be drawn onto the screen or not. Defaults to True</p>
+</dd>
+<dt>piece<span class="classifier">Piece, optional</span></dt><dd><p>The piece to be rendered, if left blank, defaults to None, which defaults to self.selectedPiece
+Ensures valid position</p>
+</dd>
+<dt>board<span class="classifier">&lt;List&lt;List&lt;Piece&gt;&gt;&gt;, optional</span></dt><dd><p>The board which to which the piece is compared. If left blank defaults to none, which 
+defaults to self.chessboard.board
+Ensures the board size matches the self.chessboard size and all its pieceTypes are valid or None</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool, optional</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal).
+Defaults to true</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h3>Raises<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>TypeError</dt><dd><p>If the input of the piece not of the allowed values, this will be triggered</p>
+</dd>
+<dt>ValueError</dt><dd><p>Will appear if either the pieces position is invalid, the boards size is invalid or the boards contents are invalid</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clientInterface.ClientInterface.rookPossiblities">
+<span class="sig-name descname"><span class="pre">rookPossiblities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderAllPossibilities</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clientInterface.ClientInterface.rookPossiblities" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the possibilities of movement for a Piece of pieceType Rook</p>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>draw<span class="classifier">bool</span></dt><dd><p>If True, the possibilities of the piece are drawn onto the clients screen. If False, possibilities arent drawn</p>
+</dd>
+<dt>piece<span class="classifier">Piece</span></dt><dd><p>The Piece to be rendered
+Ensures that 0 &lt;= piece.column &lt; self.chessboard.width
+Ensures that 0 &lt;= piece.row &lt; self.chessboard.height</p>
+</dd>
+<dt>board<span class="classifier">List&lt;List&lt;Piece&gt;&gt;&gt;</span></dt><dd><p>2D matrix that represents the chessboard of the game played
+Ensures all the items in array are either None or Piece objects</p>
+</dd>
+<dt>renderAllPossibilities<span class="classifier">bool</span></dt><dd><p>If false, excludes those possibilities that puts you in a discovered check (which would be illegal)</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h3>Raises<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chess_Multiplayer</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chessboard.html">chessboard module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">client module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">clientInterface Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clientInterface.ClientInterface"><code class="docutils literal notranslate"><span class="pre">ClientInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graphics.html">graphics module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location.html">location module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pieces.html">pieces module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serverInterface.html">serverInterface Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="client.html" title="previous chapter">client module</a></li>
+      <li>Next: <a href="graphics.html" title="next chapter">graphics module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Luca Siegel Moreno.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/clientInterface.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

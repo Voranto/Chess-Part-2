@@ -2,13 +2,12 @@ import socket
 import threading
 import random
 from chessboard import Chessboard
-from pieces import Piece,Pawn,Rook,Queen,Bishop,Night,King
 from serverInterface import ServerInterface
 from graphics import Graphics
 import pickle
 
 
-HOST = '0.0.0.0'  # Localhost
+HOST = '127.0.0.1'  # Localhost
 PORT = 5555
 
 # List to store client connections
@@ -41,27 +40,24 @@ def runGame(FEN,board,interface,dataToSend,clients):
             if data:
                 data = pickle.loads(data)
                 color =data["color"]
-                if data["promotion"]:
-                    print("PROMOTION",data["promotion"])
-                    board.board[int(data["promotion"][2])][int(data["promotion"][1])] = Piece(int(data["promotion"][1]),int(data["promotion"][2]),interface.getPieceByLetter(data["promotion"][0]))
-                    
-                    dataToSend["promotion"] = None
                 #we got a click
                 if data["clickPos"] != (-1,-1):
                     x,y = data["clickPos"]
                     
                     if 0 < x < 800 and 0 < y < 800:
                         gridx,gridy = convertCoords(x//100,y//100,color)
-                        
+                        print("Mouse clicked on ",gridx,gridy)
                         if not interface.selectedPiece and board.board[gridy][gridx] and board.board[gridy][gridx].pieceType.color == board.toMove:
                             interface.selectedPiece = board.board[gridy][gridx]
                             interface.selectedPiece.currentPossibilities.clear()
                             interface.renderSelectedPiece(None,None,False)
+                            print(interface.selectedPiece.pieceType)
+                            print(interface.selectedPiece.currentPossibilities)
                         elif interface.selectedPiece and board.board[gridy][gridx] and (gridx,gridy) not in interface.selectedPiece.currentPossibilities:
                             interface.selectedPiece = board.board[gridy][gridx]
                             interface.selectedPiece.currentPossibilities.clear()
                             interface.renderSelectedPiece(None,None,False)
-                        elif interface.selectedPiece and not board.board[gridy][gridx] and (gridx,gridy) not in interface.selectedPiece.currentPossibilities :
+                        elif interface.selectedPiece and not board.board[gridy][gridx] and (gridx,gridy) not in interface.selectedPiece.currentPossibilities:
                             interface.selectedPiece = None
                         elif interface.selectedPiece and (gridx,gridy) in interface.selectedPiece.currentPossibilities:
                             if board.toMove == "black":
@@ -69,12 +65,9 @@ def runGame(FEN,board,interface,dataToSend,clients):
                                 board.halfMoves += 1
                             print("The {} has moved from {} to {}".format(interface.selectedPiece.getPieceInfo(),interface.selectedPiece.position, (gridx,gridy)))
                             
-                            #Check for promotions
-                            
-                            if type(interface.selectedPiece.pieceType) == Pawn:
-                                if (interface.selectedPiece.pieceType.color == "white" and gridy == 0) or (interface.selectedPiece.pieceType.color == "black" and gridy == 7):
-                                    dataToSend["promotion"] = interface.selectedPiece.pieceType.color + str(gridx) + str(gridy)
                             interface.move(gridx,gridy)
+                            interface.addPosition(interface.chessboard.boardToFEN())
+                            
                             
         #Check for checkmate after move
         if interface.isValidBoard(interface.chessboard.board,interface.chessboard.whiteKingPos,interface.chessboard.blackKingPos,True) == 1:
@@ -97,6 +90,19 @@ def runGame(FEN,board,interface,dataToSend,clients):
                 return 0
             else:
                 print("no data")
+                
+        
+        """
+        Checks for draw
+        """
+        if interface.isDraw():
+            print("Game has ended by draw")
+            dataToSend["checkmate"] = "draw"
+            for conn, addr in clients:
+                dataToSend = getDataToSend(interface,dataToSend)
+                conn.send(pickle.dumps(dataToSend))
+                data = conn.recv(1024)
+            return 0
 
 def handle_clients(clients):
     """
@@ -115,11 +121,11 @@ def handle_clients(clients):
 
     playersWantToPlay = [True,True]
     while playersWantToPlay[0] and playersWantToPlay[1]:
-        FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        FEN = "4k3/4P3/4K3/8/8/8/8/8 b ---- - 0 1"
         board = Chessboard(8,8)
         interface = ServerInterface(board)
         board.FENToBoard(FEN)
-        dataToSend = {"FEN":None, "toMove": None, "selectedPiecePos": None,"eaten":None,"checkmate" : None,"restart":False,"quit":False,"promotion":None}
+        dataToSend = {"FEN":None, "toMove": None, "selectedPiecePos": None,"eaten":None,"checkmate" : None,"restart":False,"quit":False}
         runGame(FEN,board,interface,dataToSend,clients)
         playersWantToPlay = [None,None]
         while playersWantToPlay[0] == None or playersWantToPlay[1] == None:

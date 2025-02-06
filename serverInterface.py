@@ -40,13 +40,14 @@ class ServerInterface:
         Renders the possibilities of a piece no matter the type
     isCheckmate(self,color)
         Looks at a position in check and checks if it is salvagable or if its checkmate
-    getPieceByLetter(self,x)
-        Converts a letter seen in the FEN into its pieceType
+    isDraw(self)
+        Looks at a position and determines if its a draw
     """
     def __init__(self,board):
         self.chessboard = board
         self.selectedPiece = None
         self.eaten = {"r":0 , "b": 0, "n":0,"q":0,"k":0,"p":0, "R":0 , "B": 0, "N":0,"Q":0,"K":0,"P":0}
+        self.previousPositions = [self.chessboard.boardToFEN()]
 
     def rookPossiblities(self,piece,board,renderAllPossibilities):
         """
@@ -64,13 +65,17 @@ class ServerInterface:
         renderAllPossibilities : bool
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal)
         
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
+            
         Raises
         ------
         ValueError
             Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format
         """
-        currentPosX,currentPosY = piece.column,piece.row
-        
+        currentPosX,currentPosY = piece.position
         #Ensures the piece position is correct
         if currentPosX < 0 or currentPosX >= self.chessboard.width:
             raise ValueError("The x current position is invalid, cant be lower than 0 or higher than the chessboards width - 1. Value is: "+ str(currentPosX))
@@ -96,10 +101,11 @@ class ServerInterface:
         for dx,dy in [(1,0),(0,1),(-1,0),(0,-1)]:
             p = 1
             while currentPosX  + p*dx < self.chessboard.width and currentPosY  + p*dy < self.chessboard.height and currentPosX  + p*dx >= 0 and currentPosY  + p*dy >= 0:
+                validBoardStatus = -1
                 
                 if not renderAllPossibilities:
                     validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(currentPosX+p*dx,currentPosY+p*dy)),self.chessboard.whiteKingPos,self.chessboard.blackKingPos,True)
-                
+                    
                 if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
                     if not board[currentPosY+p*dy][currentPosX+p*dx] or  board[currentPosY+p*dy][currentPosX+p*dx].pieceType.color != piece.pieceType.color:
                         piece.currentPossibilities.add((currentPosX+p*dx,currentPosY+p*dy))
@@ -108,6 +114,7 @@ class ServerInterface:
                     break
                 
                 p+= 1
+        return len(piece.currentPossibilities)
                   
     def bishopPossiblities(self,piece,board,renderAllPossibilities):
         """
@@ -125,12 +132,17 @@ class ServerInterface:
         renderAllPossibilities : bool
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal)
         
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
+            
         Raises
         ------
         ValueError
             Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format
         """
-        currentPosX,currentPosY = piece.column,piece.row
+        currentPosX,currentPosY = piece.position
         
         #Ensures the piece position is correct
         if currentPosX < 0 or currentPosX >= self.chessboard.width:
@@ -155,7 +167,7 @@ class ServerInterface:
         """
         for dx,dy in [(1,1),(1,-1),(-1,1),(-1,-1)]:
             p = 1
-            while currentPosX  + p*dx < len(board) and currentPosY  + p*dy < len(board[0]):
+            while 0 <= currentPosX  + p*dx < len(board) and 0 <= currentPosY  + p*dy < len(board[0]):
                 
                 if not renderAllPossibilities:
                     validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(currentPosX+p*dx,currentPosY+p*dy)),self.chessboard.whiteKingPos,self.chessboard.blackKingPos,True)
@@ -168,6 +180,7 @@ class ServerInterface:
                     break
                 
                 p+= 1
+        return len(piece.currentPossibilities)
         
     def kingPossibilities(self,piece,board,renderAllPossibilities):
         """
@@ -185,12 +198,17 @@ class ServerInterface:
         renderAllPossibilities : bool
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal)
         
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
+            
         Raises
         ------
         ValueError
             Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format
         """
-        currentPosX,currentPosY = piece.column,piece.row
+        currentPosX,currentPosY = piece.position
         
         #Ensures the piece position is correct
         if currentPosX < 0 or currentPosX >= self.chessboard.width:
@@ -216,15 +234,16 @@ class ServerInterface:
             dx = currentPosX + x
             dy = currentPosY + y
             if 0 <= dy < len(board) and 0 <= dx < len(board[0]):
-                
+                validBoardStatus = -1
                 if not renderAllPossibilities:
                     
-                    if self.selectedPiece.pieceType.color == "white":
+                    if piece.pieceType.color == "white":
                         validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(dx,dy)),(dx,dy),self.chessboard.blackKingPos,True)
                     else:
                         validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(dx,dy)),self.chessboard.whiteKingPos,(dx,dy),True)
                 
                 if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
+                    if not renderAllPossibilities: print((currentPosX,currentPosY),(dx,dy),validBoardStatus)
                     if not board[dy][dx] or board[dy][dx].pieceType.color != piece.pieceType.color:
                         piece.currentPossibilities.add((dx,dy))
                     
@@ -258,6 +277,7 @@ class ServerInterface:
                 if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
                     if not board[0][6] or board[0][6].pieceType.color != piece.pieceType.color:
                         piece.currentPossibilities.add((6,0))
+        return len(piece.currentPossibilities)
     
     def knightPossibilities(self,piece,board,renderAllPossibilities):
         """
@@ -274,13 +294,17 @@ class ServerInterface:
             Ensures all the items in array are either None or Piece objects
         renderAllPossibilities : bool
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal)
-        
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
+            
         Raises
         ------
         ValueError
             Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format
         """
-        currentPosX,currentPosY = piece.column,piece.row
+        currentPosX,currentPosY = piece.position
         
         #Ensures the piece position is correct
         if currentPosX < 0 or currentPosX >= self.chessboard.width:
@@ -316,6 +340,7 @@ class ServerInterface:
                     if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
                         if not board[dy][dx] or  board[dy][dx].pieceType.color != piece.pieceType.color:
                             piece.currentPossibilities.add((dx,dy))
+        return len(piece.currentPossibilities)
                         
     def pawnPossibilities(self,piece,board,renderAllPossibilities):
         """
@@ -332,13 +357,17 @@ class ServerInterface:
             Ensures all the items in array are either None or Piece objects
         renderAllPossibilities : bool
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal)
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
         
         Raises
         ------
         ValueError
             Either the board input size doesnt match the self.chessboard size, or the board input doesnt have the appropiate format
         """
-        currentPosX,currentPosY = piece.column,piece.row
+        currentPosX,currentPosY = piece.position
         
         #Ensures the piece position is correct
         if currentPosX < 0 or currentPosX >= self.chessboard.width:
@@ -449,6 +478,7 @@ class ServerInterface:
                     validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(currentPosX+1,currentPosY+1),True),self.chessboard.whiteKingPos,self.chessboard.blackKingPos,True)
                 if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
                         piece.currentPossibilities.add((currentPosX+1,currentPosY+1))
+        return len(piece.currentPossibilities)
    
     def getBoard(self):
         """
@@ -525,6 +555,7 @@ class ServerInterface:
                 if board[i][j] != None:
                     temporarySelectedPiece = board[i][j]
                     temporarySelectedPiece.currentPossibilities.clear()
+
                     self.renderSelectedPiece(temporarySelectedPiece,board,renderAllPossibilities)
                     if temporarySelectedPiece.pieceType.color == "black" and whiteKingPos in temporarySelectedPiece.currentPossibilities:
                         return 1
@@ -560,6 +591,7 @@ class ServerInterface:
         
         #check either to disable or keep en passant square
         if type(self.selectedPiece.pieceType) == Pawn and abs(y-self.selectedPiece.row) == 2:
+            print("KEEP EN PASSANT SQUARE")
             if self.selectedPiece.pieceType.color == "white":
                 self.chessboard.enPassantSquare = (self.selectedPiece.column,self.selectedPiece.row-1)
             else:
@@ -580,12 +612,13 @@ class ServerInterface:
                     if (x,y) == (6,7) and self.chessboard.whiteKingCastling:
                         self.chessboard.board[7][5] = self.chessboard.board[7][7]
                         self.chessboard.board[7][7] = None
-                        self.chessboard.board[7][5].position = (5,7)
+                        self.chessboard.board[7][5].setPosition(5,7)
                     elif (x,y) == (2,7) and self.chessboard.whiteQueenCastling:
                         self.chessboard.board[7][3] = self.chessboard.board[7][0]
                         self.chessboard.board[7][0] = None
-                        self.chessboard.board[7][3].position = (3,7)
-                
+                        self.chessboard.board[7][3].setPosition(3,7)
+                    self.chessboard.whiteKingCastling = False
+                    self.chessboard.whiteQueenCastling = False
             #Disable castling in case rook is moved
             if type(self.selectedPiece.pieceType) == Rook:
                 if (self.selectedPiece.column, self.selectedPiece.row) == (0,7):
@@ -605,29 +638,46 @@ class ServerInterface:
                     if (x,y) == (6,0) and self.chessboard.blackKingCastling:
                         self.chessboard.board[0][5] = self.chessboard.board[0][7]
                         self.chessboard.board[0][7] = None
-                        self.chessboard.board[0][5].position = (5,0) 
-                    elif (x,y) == (2,0) and self.chessboard.whiteQueenCastling:
+                        self.chessboard.board[0][5].setPosition(5,0) 
+                    elif (x,y) == (2,0) and self.chessboard.blackQueenCastling:
                         self.chessboard.board[0][3] = self.chessboard.board[0][0]
                         self.chessboard.board[0][0] = None
-                        self.chessboard.board[0][3].position = (3,0)
+                        self.chessboard.board[0][3].setPosition(3,0)
+                    self.chessboard.blackKingCastling = False
+                    self.chessboard.blackQueenCastling = False
             #Disable castling in case rook is moved
             if type(self.selectedPiece.pieceType) == Rook:
-                if (self.selectedPiece.column, self.selectedPiece.row) == (0,0):
+                if self.selectedPiece.position == (0,0):
                     self.chessboard.blackQueenCastling = False
-                elif (self.selectedPiece.column, self.selectedPiece.row) == (7,0):
+                elif self.selectedPiece.position == (7,0):
                     self.chessboard.blackKingCastling = False
             self.chessboard.toMove = "white"
-        self.chessboard.board[self.selectedPiece.row][self.selectedPiece.column] = None
+        self.chessboard.board[self.selectedPiece.position[1]][self.selectedPiece.position[0]] = None
         self.selectedPiece.row = y
         self.selectedPiece.column = x
         self.chessboard.board[y][x] = self.selectedPiece
-        self.selectedPiece.position = (x,y)
+        self.selectedPiece.setPosition(x,y)
         
         
             #check for promotions
         if type(self.selectedPiece.pieceType) == Pawn:
             self.chessboard.halfMoves = 0
-    
+            if (self.selectedPiece.pieceType.color == "white" and y == 0) or (self.selectedPiece.pieceType.color == "black" and y == 7):
+                print("PROMOTION!")
+                newType = None
+                while newType != "n" and newType != "b" and newType != "q" and newType != "r":
+                    newType = input("Type n for knight, b for bishop, q for queen and r for rook: ")   
+                    if newType == "n":
+                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Night(self.selectedPiece.pieceType.color))
+                    elif newType == "b":
+                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Bishop(self.selectedPiece.pieceType.color))
+                    elif newType == "r":
+                        
+                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Rook(self.selectedPiece.pieceType.color))
+                    elif newType == "q":
+                        self.chessboard.board[y][x] = Piece(self.selectedPiece.row,self.selectedPiece.column,Queen(self.selectedPiece.pieceType.color))
+                    else:
+                        print("INCORRECT INPUT")
 
         
             
@@ -654,6 +704,10 @@ class ServerInterface:
             If false, excludes those possibilities that puts you in a discovered check (which would be illegal).
             Defaults to true
         
+        Returns
+        ---------
+        int 
+            Number of moves possible by that piece
         Raises
         -------
         TypeError
@@ -688,18 +742,17 @@ class ServerInterface:
         Note: a queen is seen as the combination of rook and bishop, not its own method
         """
         if type(piece.pieceType) == Rook:
-            self.rookPossiblities(piece,board,renderAllPossibilities)
+            return self.rookPossiblities(piece,board,renderAllPossibilities)
         elif type(piece.pieceType) == Bishop:
-            self.bishopPossiblities(piece,board,renderAllPossibilities)
+            return self.bishopPossiblities(piece,board,renderAllPossibilities)
         elif type(piece.pieceType) == Queen:
-            self.bishopPossiblities(piece,board,renderAllPossibilities)
-            self.rookPossiblities(piece,board,renderAllPossibilities)
+            return self.bishopPossiblities(piece,board,renderAllPossibilities) + self.rookPossiblities(piece,board,renderAllPossibilities)
         elif type(piece.pieceType) == King:
-            self.kingPossibilities(piece,board,renderAllPossibilities)
+            return self.kingPossibilities(piece,board,renderAllPossibilities)
         elif type(piece.pieceType) == Night:
-            self.knightPossibilities(piece,board,renderAllPossibilities)
+            return self.knightPossibilities(piece,board,renderAllPossibilities)
         elif type(piece.pieceType) == Pawn:
-            self.pawnPossibilities(piece,board,renderAllPossibilities)
+            return self.pawnPossibilities(piece,board,renderAllPossibilities)
         else:
             raise TypeError("Piece has no correct type")
     
@@ -766,65 +819,35 @@ class ServerInterface:
                         temporaryBoard = self.chessboard.getTempBoard()
                         temporaryBoard[i][j] = None
                         temporaryBoard[moves[1]][moves[0]] = currentPiece
-                        currentPiece.position = moves
+                        currentPiece.setPosition(moves[0],moves[1])
                         
                         if self.isValidBoard(temporaryBoard,whiteKingPos,blackKingPos,True) == 0:
 
                             return False
         return True
-    def getPieceByLetter(self,x):
-        """
-        Converts a letter into its said PieceType, following the same rules that the FEN uses.
-        
-        Lowercase letters map to black pieces and uppercase to white pieces.
-        The comparisons are as follows:
-        q -> queen
-        r -> rook
-        k -> king
-        b -> bishop
-        n -> knight
-        p -> pawn
-
-        Parameters
-        ----------
-        x : str
-            the letter to be returned
-            
-        Returns
-        -------
-        Queen,Rook,Bishop,Night,Pawn,King
-            The piece type appropiate for the letter, with its matching color
-        
-        Raises
-        -------
-        ValueError
-            If the string input x doesnt match any of the allowed pieceTypes
-        """
-        
-        if x == "Q":
-            return Queen("white")
-        if x == "R":
-            return Rook("white")
-        if x == "B":
-            return Bishop("white")
-        if x == "N":
-            return Night("white")
-        if x == "P":
-            return Pawn("white")
-        if x == "K":
-            return King("white")
-
-        if x == "q":
-            return Queen("black")
-        if x == "r":
-            return Rook("black")
-        if x == "b":
-            return Bishop("black")
-        if x == "n":
-            return Night("black")
-        if x == "p":
-            return Pawn("black")
-        if x == "k":
-            return King("black")
-        raise ValueError("Invalid type error: " + x)
     
+    def isDraw(self):
+        
+        if self.chessboard.halfMoves >= 50:
+            return True
+        lastPosition = self.previousPositions[-1]
+        if self.previousPositions.count(lastPosition) >= 3:
+            return True
+        
+        totalMovesWhite = 0
+        totalMovesBlack = 0
+        for row in self.chessboard.board:
+            for element in row:
+                if element:
+                    if element.pieceType.color == "white":
+                        totalMovesWhite += self.renderSelectedPiece(element,None,False)
+                    if element.pieceType.color == "black":
+                        totalMovesBlack += self.renderSelectedPiece(element,None,False)
+        if totalMovesBlack == 0 or totalMovesWhite == 0:
+            return True
+
+        return False
+        
+        
+    def addPosition(self,posToAdd):
+        self.previousPositions.append(posToAdd)
