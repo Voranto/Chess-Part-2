@@ -63,6 +63,7 @@ def runGame(FEN,board,interface,dataToSend,clients):
                             if board.toMove == "black":
                                 board.fullMoves += 1
                                 board.halfMoves += 1
+                            print(interface.selectedPiece.currentPossibilities)
                             print("The {} has moved from {} to {}".format(interface.selectedPiece.getPieceInfo(),interface.selectedPiece.position, (gridx,gridy)))
                             
                             interface.move(gridx,gridy)
@@ -121,7 +122,7 @@ def handle_clients(clients):
 
     playersWantToPlay = [True,True]
     while playersWantToPlay[0] and playersWantToPlay[1]:
-        FEN = "4k3/4P3/4K3/8/8/8/8/8 b ---- - 0 1"
+        FEN = "4k3/4P3/8/4K3/8/8/8/8 w ---- - 0 1"
         board = Chessboard(8,8)
         interface = ServerInterface(board)
         board.FENToBoard(FEN)

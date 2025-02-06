@@ -683,7 +683,9 @@ class ClientInterface:
                     raise ValueError("Item in board is invalid: " + item)
                 
         
-        
+        #Quick check if the kings are too close
+        if abs(whiteKingPos[0]-blackKingPos[0]) == 1 or abs(whiteKingPos[1]-blackKingPos[1]) == 1:
+            return 3
         """
         Loops through the entire board. If the current square has a value, we render its possibilities and look if any 
             of those possibilities include the opposite kings position.

@@ -243,7 +243,7 @@ class ServerInterface:
                         validBoardStatus = self.isValidBoard(self.chessboard.simulateMoveTempBoard(piece,(dx,dy)),self.chessboard.whiteKingPos,(dx,dy),True)
                 
                 if renderAllPossibilities or validBoardStatus == 0 or (self.chessboard.toMove == "black" and validBoardStatus == 1) or (self.chessboard.toMove == "white" and validBoardStatus == 2):
-                    if not renderAllPossibilities: print((currentPosX,currentPosY),(dx,dy),validBoardStatus)
+
                     if not board[dy][dx] or board[dy][dx].pieceType.color != piece.pieceType.color:
                         piece.currentPossibilities.add((dx,dy))
                     
@@ -514,7 +514,7 @@ class ServerInterface:
         Returns
         -------
         int
-            0 represents no checks, 1 represents white is in check and 2 represents black is in check
+            0 represents no checks, 1 represents white is in check and 2 represents black is in check,3 if both become in check
         
         Raises
         -------
@@ -541,6 +541,9 @@ class ServerInterface:
                     raise ValueError("Item in board is invalid: " + item)
                 
         
+        #Quick check if the kings are too close
+        if abs(whiteKingPos[0]-blackKingPos[0]) == 1 or abs(whiteKingPos[1]-blackKingPos[1]) == 1:
+            return 3
         
         """
         Loops through the entire board. If the current square has a value, we render its possibilities and look if any 
@@ -836,7 +839,8 @@ class ServerInterface:
         
         totalMovesWhite = 0
         totalMovesBlack = 0
-        for row in self.chessboard.board:
+        boardCopy = self.chessboard.getTempBoard()
+        for row in boardCopy:
             for element in row:
                 if element:
                     if element.pieceType.color == "white":

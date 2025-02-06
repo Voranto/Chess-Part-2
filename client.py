@@ -95,6 +95,7 @@ def receive_data(conn):
                         
                         #If the FEN has changed, update the client. If the FEN remains the same, no further changes are needed
                         if FEN != data["FEN"] and FEN:
+                            print("new FEN: " + data["FEN"])
                             moveMade = True
 
                         #Take the data sent and integrate it to the itnerface
@@ -153,7 +154,7 @@ def main():
             dataToSend["wantsToPlay"] = None
         
         #If no checkmate, game is running
-        if interface.checkmate != "black" and interface.checkmate != "white":
+        if interface.checkmate != "black" and interface.checkmate != "white" and interface.checkmate != "draw":
             #Recieve the server side FEN, and apply it to the client side chessboard, remembering locking the thread        
             if FEN:
                 with lock:
